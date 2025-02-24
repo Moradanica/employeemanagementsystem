@@ -4,8 +4,22 @@ FROM openjdk:17-jdk-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the jar file into the container at /app
-COPY target/employeemanagementsystema-0.0.1-SNAPSHOT.jar /app/app.jar
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:17-jdk-slim
 
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the JAR file into the container
+COPY target/employeemanagementsystema-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the application port (optional, useful for local runs)
+EXPOSE 8080
+
+# Use environment variables for database configuration
+ENV DATABASE_URL="jdbc:mysql://nozomi.proxy.rlwy.net:45998/railway"
+ENV DATABASE_USERNAME="root"
+ENV DATABASE_PASSWORD="SknadLRHtJoGTBVXPxAXZbNhxXpFNqBT"
+
+# Run the JAR file with environment variables
+ENTRYPOINT ["sh", "-c", "java -jar /app.jar"]
